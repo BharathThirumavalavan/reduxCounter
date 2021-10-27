@@ -1,0 +1,76 @@
+.center{
+ height:50vh;
+}
+
+
+.slideLeft{
+ position: relative;
+ animation: fromLeft 1s ease-in-out 0s 1 alternate;
+}
+
+@keyframes fromLeft {
+ 0%{
+  opacity: 0;
+  left:100px
+ }
+
+ 80%{
+ 
+  left:-5px
+ }
+
+  100%{
+    opacity: 1;
+  left:0px
+ }
+
+}
+
+.slideRight{
+ position: relative;
+ animation: fromRight 1s ease-in-out 0s 1 alternate;
+}
+
+@keyframes fromRight {
+ 0%{
+  opacity: 0;
+  right:100px
+ }
+
+ 80%{
+  right:-5px
+ }
+
+  100%{
+    opacity: 1;
+  right:0px
+ }
+}
+
+.slideUp{
+ position: relative;
+ animation: fromBottom 1s ease-in-out 0s 1 alternate;
+}
+
+
+@keyframes fromBottom {
+ 0%{
+  opacity: 0;
+  top:250px
+ }
+
+ 80%{
+  top:-5px
+ }
+
+  100%{
+    opacity: 1;
+  top:0px
+ }
+}
+
+.slideUpTimer{
+ position: relative;
+ animation: fromBottom 1100ms ease-in-out 0ms 1 alternate;
+}
+ 

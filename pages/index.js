@@ -1,82 +1,125 @@
 import Head from 'next/head'
+import { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { counterActions, addNumberReducer } from '../app/store'
 
 export default function Home() {
+  const count = useSelector((state) => state.counter.counter)
+  const visiblity = useSelector((state) => state.counter.visible)
+  const dispatch = useDispatch()
+  const [input,setInput] = useState(0)
+
+  function incrementTimer(e){
+    e.preventDefault();
+    dispatch(counterActions.increment())
+  }
+  
+  function decrementTimer(e) {
+    e.preventDefault()
+    dispatch(counterActions.decrement())
+  }
+
+  function hideTimer(e){
+    e.preventDefault()
+    dispatch(counterActions.toggle())
+  }
+
+  function addInput(e){
+     e.preventDefault()
+    setInput(e.target.value)
+  }
+
+  function resetTimer(e) {
+    e.preventDefault()
+    dispatch(counterActions.reset())
+  }
+
+  function validateInput(e){
+    e.preventDefault()
+    dispatch(addNumberReducer(input))
+  }
+  
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
+    <div className=''>
       <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>Next Redux</title>
+        <link rel='icon' href='/favicon.ico' />
       </Head>
+      <main className='center flex items-center justify-center'>
+        <div>
+          <h2 className='mb-4 pb-5 text-center'>
+            <span className=' text-5xl font-extralight text-gray-900 slideRight'>
+              Counter with{' '}
+            </span>
+            <span className='font-mono text-3xl text-purple-600 slideLeft '>
+              @reduxtoolkit
+            </span>
+          </h2>
 
-      <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
-        <h1 className="text-6xl font-bold">
-          Welcome to{' '}
-          <a className="text-blue-600" href="https://nextjs.org">
-            Next.js!
-          </a>
-        </h1>
+          {visiblity && (
+            <>
+              <div className='flex flex-col items-center justify-center slideUp'>
+                <div>
+                  <p
+                    className={`text-center px-6 py-3 text-2xl font-normal  bg-gray-100 rounded-full border-2  ${
+                      count >= 0
+                        ? 'text-green-700 border-green-700'
+                        : 'text-red-700 border-red-700'
+                    }`}
+                  >
+                    {count}
+                  </p>
+                </div>
+                <div className='flex items-center justify-center'>
+                  <button
+                    className='slideRight button mx-3 my-5 px-4 py-2 font-semibold tracking-wide rounded-md text-gray-50 bg-gradient-to-tr from-green-500 to-blue-500 hover:from-green-400 hover:to-blue-400 active:ring-2 active:ring-gray-300'
+                    onClick={incrementTimer}
+                  >
+                    Increment
+                  </button>
+                  <button
+                    className=' mx-3 my-5 px-4 py-2 font-semibold tracking-wide rounded-md text-gray-50 bg-gradient-to-tr from-red-500 to-pink-500  hover:from-red-400 hover:to-pink-400 active:ring-2 active:ring-gray-300'
+                    onClick={decrementTimer}
+                  >
+                    Decrement
+                  </button>
+                  <button
+                    className='slideLeft mx-3 my-5 px-4 py-2 font-semibold tracking-wide rounded-md text-gray-900 bg-gradient-to-br from-gray-100 to-gray-400  hover:from-gray-500 hover:to-gray-300  active:ring-2 active:ring-gray-300'
+                    onClick={resetTimer}
+                  >
+                    Reset
+                  </button>
+                </div>
+              </div>
+              <div className='flex flex-row items-center justify-center slideUp'>
+                <input
+                  type='number'
+                  maxLength={2}
+                  className='border rounded p-2 slideRight'
+                  onChange={addInput}
+                  value={input}
+                />
+                <button
+                  className='mx-3 my-5 px-4 py-2 font-semibold tracking-wide text-gray-50 bg-gradient-to-tr from-blue-900 to-purple-700 rounded-md hover:opacity-80     active:ring-2 active:ring-gray-300 slideLeft'
+                  onClick={validateInput}
+                >
+                  Add this to counter
+                </button>
+              </div>
+            </>
+          )}
 
-        <p className="mt-3 text-2xl">
-          Get started by editing{' '}
-          <code className="p-3 font-mono text-lg bg-gray-100 rounded-md">
-            pages/index.js
-          </code>
-        </p>
-
-        <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 sm:w-full">
-          <a
-            href="https://nextjs.org/docs"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Documentation &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Find in-depth information about Next.js features and API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Learn &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Learn about Next.js in an interactive course with quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Examples &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Discover and deploy boilerplate example Next.js projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Deploy &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+          <div className='flex align-center justify-center slideUpTimer'>
+            <button
+              className='mx-3 my-5 px-4 py-2 font-semibold tracking-wide text-gray-50 bg-gradient-to-br from-red-500 to-yellow-500 rounded-md hover:from-red-400 hover:to-yellow-400 active:ring-2 active:ring-gray-300'
+              onClick={hideTimer}
+            >
+              {visiblity ? 'Turn off timer' : 'Turn on timer'}
+            </button>
+          </div>
         </div>
       </main>
-
-      <footer className="flex items-center justify-center w-full h-24 border-t">
-        <a
-          className="flex items-center justify-center"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className="h-4 ml-2" />
-        </a>
-      </footer>
     </div>
   )
 }
